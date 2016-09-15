@@ -16,7 +16,7 @@ For ease in execution, I have created 3 different sets of Mapper-Reducer-Driver 
 
 3. View the month wise expenses in Gas and electric bills to get the peak expenses
 
-  hadoop jar billPartition.jar solution.ProcessAllBillsByMonth bill_log bill_log_op3
+  hadoop jar billPartition.jar solution.ProcessBillsByMonth bill_log bill_log_op3
   
 
 
