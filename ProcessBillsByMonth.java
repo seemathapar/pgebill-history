@@ -1,7 +1,6 @@
 package solution;
 
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -24,16 +23,12 @@ public class ProcessBillsByMonth {
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
-		
 		/*
-		 * 2. To get the month wise total for the bills across all years. 
+		 * 2. To get the month wise total for the bills across all years.
 		 */
-		 
+
 		job.setMapperClass(BillMonthMapper.class);
 		job.setReducerClass(AverageBillReducer.class);
-		
-
-		
 
 		job.setMapOutputKeyClass(IntWritable.class);
 		job.setMapOutputValueClass(Text.class);
@@ -41,7 +36,6 @@ public class ProcessBillsByMonth {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
 
-		
 		boolean success = job.waitForCompletion(true);
 		System.exit(success ? 0 : 1);
 	}

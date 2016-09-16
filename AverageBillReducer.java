@@ -10,8 +10,15 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 /* Counts the number of values associated with a key */
 
-public class AverageBillReducer extends
-		Reducer<IntWritable, Text, Text, Text> {
+public class AverageBillReducer extends Reducer<IntWritable, Text, Text, Text> {
+
+	@Override
+	protected void setup(
+			org.apache.hadoop.mapreduce.Reducer<IntWritable, Text, Text, Text>.Context context)
+			throws IOException, InterruptedException {
+		super.setup(context);
+		context.write(new Text("Month"), new Text("Amount"));
+	}
 
 	@Override
 	public void reduce(IntWritable key, Iterable<Text> values, Context context)
@@ -19,8 +26,7 @@ public class AverageBillReducer extends
 
 		/*
 		 * Iterate over the values iterable and sum the bill amount for each key
-		 * - month and count the values.
-		 * Emit the key (month) and the average
+		 * - month and count the values. Emit the key (month) and the average
 		 * monthly bill.
 		 */
 
@@ -33,15 +39,16 @@ public class AverageBillReducer extends
 
 			String[] split = value.toString().split(",");
 			monthName = new StringBuilder(split[0]);
-			billAmount = new BigDecimal(split[1].substring(1));			
+			billAmount = new BigDecimal(split[1].substring(1));
 			totalMonthlyAmount = totalMonthlyAmount.add(billAmount);
 			count++;
 		}
 		if (count != 0) {
 			BigDecimal avgMonthlyAmount = totalMonthlyAmount.divide(
 					new BigDecimal(count), 2, BigDecimal.ROUND_HALF_UP);
-			
-			context.write(new Text(monthName.toString()), new Text(NumberFormat.getCurrencyInstance().format(avgMonthlyAmount)));
-		} 
+
+			context.write(new Text(monthName.toString()), new Text(NumberFormat
+					.getCurrencyInstance().format(avgMonthlyAmount)));
+		}
 	}
 }

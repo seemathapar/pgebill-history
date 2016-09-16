@@ -1,7 +1,6 @@
 package solution;
 
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -33,7 +32,7 @@ public class ProcessAllBills {
 		job.setMapOutputValueClass(Text.class);
 
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(FloatWritable.class);
+		job.setOutputValueClass(Text.class);
 
 		
 		boolean success = job.waitForCompletion(true);
